@@ -37,10 +37,7 @@ node* create_tree(grammar g) {
 				n->children.push_back(temp);
 				nodes.push_front(temp);
 			}
-		} else {
-
-		}
-		
+		} 
 	}
 	return root;
 }
@@ -69,7 +66,7 @@ node* create_tree(grammar g, vector<product> ps) {
 }
 
 void print_tree(node *root) {
-	if (root != NULL && root->nodekind == "Vn") {
+	if (root != NULL && root->nodekind == "Vn" && root->value != "`") {
 		if (root->children.size() > 0) {
 			cout << root->value << '(';
 			for (node* n : root->children) {
@@ -81,7 +78,7 @@ void print_tree(node *root) {
 			cout << root->value;
 		}
 	} 
-	else if (root != NULL && root->nodekind == "Vt") {
+	else if (root != NULL && root->nodekind == "Vt" && root->value != "`") {
 		cout << root->value;
 	}
 }

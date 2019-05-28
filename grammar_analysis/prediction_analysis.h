@@ -3,6 +3,7 @@
 #include <map>
 #include <stack>
 #include <iostream>
+#include <iomanip>
 #include "syntax_tree.h"
 const int row = 10;
 const int col = 10;
@@ -18,8 +19,8 @@ void set_map(grammar g) {
 	for (string s : g.Vt) {
 		m[s] = k++;
 	}
-	/*
-	m["E"] = 0;
+	
+	/*m["E"] = 0;
 	m["B"] = 1;
 	m["T"] = 2;
 	m["C"] = 3;
@@ -80,6 +81,32 @@ void set_table(grammar g) {
 	}
 
 }
+
+void print_table(grammar g) {
+	g.Vt.insert("#");
+	cout << "       " << setw(5);
+	for (string v : g.Vt) {
+		cout  <<  "|" << setw(6) << v << setw(6);
+	}
+	cout << endl;
+	for (string v : g.Vn) {
+		cout << v << setw(5);
+		for (string vv : g.Vt) {
+			product &p = table[m[v]][m[vv]];
+			if (p.left == "" && p.right == "") {
+				cout << "|" << setw(5) << "      " << setw(5);;
+			} else {
+				
+				//cout << setiosflags(ios::right);
+				//cout.fill(' ');
+				cout << "|" << setw(5) << p << setw(2);
+			}
+		}
+		cout << endl;
+	}
+	cout << endl;
+	
+}
 void print_stack(stack<string>  s) {
 	stack<string> ss;
 	while (s.empty() == false) {
@@ -106,9 +133,6 @@ node* predict(grammar g, string token) {
 	int i = 0;
 	while (s.top() != "#") {
 		i++;
-		/*if (token[index] == '#') {
-			break;
-		}*/
 		if (g.Vt.count(s.top()) != 0 || s.top() == "#") {
 			if (s.top() == string{ token[index] }) {
 				s.pop();
@@ -132,7 +156,11 @@ node* predict(grammar g, string token) {
 						s.push(string{ right[i] });
 					}
 				}
-				
+	
+			} else {
+				cout << "error" << endl;
+				flag = false;
+				break;
 			}
 		}
 		cout << i << "          ";

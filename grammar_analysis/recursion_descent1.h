@@ -21,24 +21,24 @@ namespace rd {
 		if (getfirst("E", g).count(temp) != 0 || (getfirst("E", g).count("`") != 0 && getfollow("E", g).count(temp) != 0)) {
 			node* f1 = T();
 			node* f2 = B();
-			if (f1 && f2) {
+			if (f1 != NULL && f2 != NULL) {
 				root->children.push_back(f1);
 				root->children.push_back(f2);
 				cout << "分析成功" << endl;
 				return root;
+			} else {
+				cout << "分析失败" << endl;
+				return NULL;
 			}
-
-		} else {
-			cout << "分析失败" << endl;
-			return NULL;
-		}
+			
+		} 
 	}
 
 	node* T() {
 		char c = token[k];
 		string temp = string{ c };
 		node* p = new node("T", get_type(g, "T"));
-		if (getfirst("T", g).count(temp) != 0 || (getfirst("T", g).count("`") != 0 && getfollow("T", g).count(temp) != 0)) {
+		if (getfirst("T", g).count(temp) != 0 ) {
 			node* f1 = F();
 			if (f1) {
 				node * f2 = C();
@@ -53,10 +53,13 @@ namespace rd {
 	}
 
 	node* B() {
+		/*
+		 || (getfirst("B", g).count("`") != 0 && getfollow("B", g).count(temp) != 0)
+		*/
 		char c = token[k];
 		string temp = string{ c };
 		node* p = new node("B", get_type(g, "B"));
-		if (getfirst("B", g).count(temp) != 0 || (getfirst("B", g).count("`") != 0 && getfollow("B", g).count(temp) != 0)) {
+		if (getfirst("B", g).count(temp) != 0) {
 			node* f1 = A();
 			if (f1) {
 				node* f2 = T();
@@ -70,23 +73,9 @@ namespace rd {
 					}
 				}
 			}
-			return p;
-		} else {
-			node* f1 = A();
-			if (f1) {
-				node* f2 = T();
-				if (f2) {
-					node* f3 = B();
-					if (f3) {
-						p->children.push_back(f1);
-						p->children.push_back(f2);
-						p->children.push_back(f3);
-						return p;
-					}
-				}
-			}
-		}
-		return NULL;
+			return NULL;
+		} 
+		return p;
 	}
 
 	node* F() {
@@ -123,7 +112,7 @@ namespace rd {
 		char c = token[k];
 		string temp = string{ c };
 		node* p = new node("C", get_type(g, "C"));
-		if (getfirst("C", g).count(temp) != 0 || (getfirst("C", g).count("`") != 0 && getfollow("C", g).count(temp) != 0)) {
+		if (getfirst("C", g).count(temp) != 0 ) {
 			node* f1 = M();
 			if (f1) {
 				p->children.push_back(f1);
@@ -136,24 +125,11 @@ namespace rd {
 						return p;
 					}
 				}
-			}
-			return p;
-		} else {
-			node* f1 = M();
-			if (f1) {
-				p->children.push_back(f1);
-				node * f2 = F();
-				if (f2) {
-					p->children.push_back(f2);
-					node * f3 = C();
-					if (f3) {
-						p->children.push_back(f3);
-						return p;
-					}
-				}
-			}
-		}
-		return NULL;
+				
+			} 
+			return NULL;
+		} 
+		return p;
 	}
 	node* A() {
 		char c = token[k];
